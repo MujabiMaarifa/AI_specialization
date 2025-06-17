@@ -7,7 +7,8 @@
 
 ![alt text](image-3.png)
 
-
+![alt text](image-4.png)
+***screenshots**
 *** this is an AI chatbot that is rulebased bot to help users and traders know the current market trends concerning crypto
 
 *** to clone the the project 

@@ -42,7 +42,7 @@ class Crypto_Buddy_Bot:
                 return reply
 
         # check for users asking about a specific crypto
-        keywords = ["sustainable", "eco-friendly", "efficient", "long-term", "favourable", "good", "bad", "good", "best", "favourable", "recommend", "recommended"]
+        keywords = ["sustainable", "stable", "eco-friendly", "efficient", "long-term", "favourable", "good", "high", "good", "best", "rising", "favourable", "recommend", "most recommended"]
 
         if any(keyword in message for keyword in keywords):
             # filter to iterate to only crypto with high sustainability score
@@ -56,11 +56,28 @@ class Crypto_Buddy_Bot:
                 # Access the full data for the recommended crypto to give a better response
                 recommend_data = self.crypto_data[recommend_crypto_name]
 
-                return (f"For sustainability, I recommend {recommend_crypto_name}! 🌱 "
+                return (f"For stable crypto, I recommend {recommend_crypto_name}! 🌱 "
                         f"It has a sustainability score of {recommend_data['sustainability_score']:.0%} "
                         f"and its energy use is {recommend_data['energy_use']}. "
-                        f"It's eco-friendly and has long-term potential!")
-            else:
+                        f"It's not eco-friendly and has short-term potential! But it may shoot!!")
+            
+        low_keywords = ["low", "down", "unstable", "unsustainable", "less", "below", "less", "not recommended", "loss", "short-term"]
+
+        if any(keyword in message for keyword in low_keywords):
+            # filter to iterate to only crypto with low sustainability score
+            unstable_cryptos = []
+            for name_key, data_value in self.crypto_data.items():
+                if 'sustainability_score' in data_value:
+                    unstable_cryptos.append((name_key, data_value['sustainability_score']))
+                    if unstable_cryptos:
+                        not_recommend_crypto_name = min(unstable_cryptos, key=lambda x: x[1])[0]
+                        recommend_data = self.crypto_data[not_recommend_crypto_name]
+
+                        return (f"For unsustainability, check {not_recommend_crypto_name}! 🌱 "
+                                f"It has a sustainability score of {recommend_data['sustainability_score']:.0%} "
+                                f"and its energy use is {recommend_data['energy_use']}. "
+                                f"It's eco-friendly and has long-term potential!")
+        else:
                 return "Hmm. I am not sure what you asked. Try to ask more about a specific crypto."
             
         for crypto_name in self.crypto_keywords:
@@ -84,7 +101,7 @@ if __name__ == "__main__":
     print("Hey there! Let’s find you a green and growing crypto!\n")
 
     while True:
-        user_input = input("User: ")
+        user_input = input("You: ")
         if user_input.lower().strip() in ["quit", "exit", "goodbye"]:
             print("\nCrypto Buddy: Goodbye! Come back anytime.\n")
             break
